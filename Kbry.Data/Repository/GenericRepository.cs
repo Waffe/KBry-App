@@ -47,5 +47,11 @@ namespace Kbry.Data.Repository
         {
             await Context.SaveChangesAsync();
         }
+
+        public void Update(TEntity entityToUpdate)
+        {
+            Context.Set<TEntity>().Attach(entityToUpdate);
+            Context.Entry(entityToUpdate).State = EntityState.Modified;
+        }
     }
 }
