@@ -8,7 +8,7 @@ using Kbry.Data.Model;
 
 namespace Kbry.Data
 {
-    class KbryDbContext : DbContext
+    public class KbryDbContext : DbContext
     {
         public KbryDbContext() : base("KbryDB")
         {
