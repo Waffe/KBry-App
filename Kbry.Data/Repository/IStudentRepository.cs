@@ -3,7 +3,7 @@ using Kbry.Data.Model;
 
 namespace Kbry.Data.Repository
 {
-    public interface IStudentRepository
+    public interface IStudentRepository : IGenericRepository<Student>
     {
         IEnumerable<Student> GetStudentsByClass(int classId);
     }

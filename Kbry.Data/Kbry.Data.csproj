@@ -52,6 +52,10 @@
     <Compile Include="Migrations\201711291223042_initial.Designer.cs">
       <DependentUpon>201711291223042_initial.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201711301243154_AddedAnnotationsForModel.cs" />
+    <Compile Include="Migrations\201711301243154_AddedAnnotationsForModel.Designer.cs">
+      <DependentUpon>201711301243154_AddedAnnotationsForModel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\Attendance.cs" />
     <Compile Include="Model\Class.cs" />
@@ -61,6 +65,7 @@
     <Compile Include="Repository\ClassRepository.cs" />
     <Compile Include="Repository\GenericRepository.cs" />
     <Compile Include="Repository\IAttendanceRepository.cs" />
+    <Compile Include="Repository\IClassRepository.cs" />
     <Compile Include="Repository\IGenericRepository.cs" />
     <Compile Include="Repository\IStudentRepository.cs" />
     <Compile Include="Repository\StudentRepository.cs" />
@@ -72,6 +77,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201711291223042_initial.resx">
       <DependentUpon>201711291223042_initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711301243154_AddedAnnotationsForModel.resx">
+      <DependentUpon>201711301243154_AddedAnnotationsForModel.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
