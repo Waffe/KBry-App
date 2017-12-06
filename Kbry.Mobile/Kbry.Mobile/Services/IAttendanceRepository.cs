@@ -8,7 +8,7 @@ namespace Kbry.Mobile.Services
 {
     public interface IAttendanceRepository
     {
-        void AddAttendanceAsync(Attendance item);
+        void AddAttendanceAsync(Attendance attendance);
         void ClearFileAsync();
         Task<Attendance> GetAttendanceAsync();
     }

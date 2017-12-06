@@ -8,21 +8,20 @@ namespace Kbry.Mobile.Services
 {
     public class AttendanceRepository : IAttendanceRepository
     {
-        private readonly IFolder _rootFolder;
         private readonly IFolder _folder;
         private readonly IFile _file;
 
         public AttendanceRepository()
         {
-            _rootFolder = FileSystem.Current.LocalStorage;
-            _folder = FileHelper.GetOrCreateFolderAsync(_rootFolder, "attendance").Result;
+            var rootFolder = FileSystem.Current.LocalStorage;
+            _folder = FileHelper.GetOrCreateFolderAsync(rootFolder, "attendance").Result;
             _file = FileHelper.GetOrCreateFileAsync(_folder, "attendance").Result;
         }
 
-        public async void AddAttendanceAsync(Attendance item)
+        public async void AddAttendanceAsync(Attendance attendance)
         {
-            if (!await IsDateRegistered(item.Date))
-                await _file.WriteAllTextAsync(JsonConvert.SerializeObject(item));
+            if (!await IsDateRegistered(attendance.Date))
+                await _file.WriteAllTextAsync(JsonConvert.SerializeObject(attendance));
             else
                 throw new Exception("Attendance is already registered today");
         }
