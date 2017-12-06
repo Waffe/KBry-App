@@ -19,9 +19,14 @@ namespace Kbry.Data
         public DbSet<Class> Classes { get; set; }
         public DbSet<Attendance> Attendances { get; set; }
 
-        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        //protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        //{
+        //    base.OnModelCreating(modelBuilder);
+        //}
+
+        public static KbryDbContext Create()
         {
-            base.OnModelCreating(modelBuilder);
+            return new KbryDbContext();
         }
     }
 }
