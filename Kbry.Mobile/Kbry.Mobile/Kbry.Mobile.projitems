@@ -33,6 +33,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Services\IAttendanceRepository.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\IRegistrationRepository.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\RegistrationRepository.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\FileHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\AboutPage.xaml.cs">
       <DependentUpon>AboutPage.xaml</DependentUpon>
     </Compile>

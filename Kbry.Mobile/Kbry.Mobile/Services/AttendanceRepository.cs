@@ -15,8 +15,8 @@ namespace Kbry.Mobile.Services
         public AttendanceRepository()
         {
             _rootFolder = FileSystem.Current.LocalStorage;
-            _folder = GetOrCreateFolderAsync().Result;
-            _file = GetOrCreateFileAsync().Result;
+            _folder = FileHelper.GetOrCreateFolderAsync(_rootFolder, "attendance").Result;
+            _file = FileHelper.GetOrCreateFileAsync(_folder, "attendance").Result;
         }
 
         public async void AddAttendanceAsync(Attendance item)
@@ -42,17 +42,6 @@ namespace Kbry.Mobile.Services
         {
             var json = await _file.ReadAllTextAsync();
             return JsonConvert.DeserializeObject<Attendance>(json);
-        }
-
-        private async Task<IFolder> GetOrCreateFolderAsync()
-        {
-            return await _rootFolder.CreateFolderAsync("attendance",
-                CreationCollisionOption.OpenIfExists);
-        }
-
-        private async Task<IFile> GetOrCreateFileAsync()
-        {
-            return await _folder.CreateFileAsync($"attendance{DateTime.Now:yyyyMMdd}.txt", CreationCollisionOption.OpenIfExists);
         }
     }
 }
