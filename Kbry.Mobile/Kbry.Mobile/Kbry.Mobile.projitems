@@ -27,6 +27,13 @@
     <Compile Include="$(MSBuildThisFileDirectory)App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Models\Attendance.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\RegistrationCode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\AttendanceRepository.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\FileHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\IAttendanceRepository.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\IRegistrationRepository.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\RegistrationRepository.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\AboutPage.xaml.cs">
       <DependentUpon>AboutPage.xaml</DependentUpon>
     </Compile>
@@ -49,7 +56,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ItemsViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="$(MSBuildThisFileDirectory)Services\" />
     <Folder Include="$(MSBuildThisFileDirectory)ViewModels\" />
   </ItemGroup>
 </Project>
