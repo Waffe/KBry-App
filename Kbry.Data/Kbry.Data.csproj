@@ -57,6 +57,7 @@
       <DependentUpon>201711301243154_AddedAnnotationsForModel.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Model\ApiKey.cs" />
     <Compile Include="Model\Attendance.cs" />
     <Compile Include="Model\Class.cs" />
     <Compile Include="Model\Student.cs" />

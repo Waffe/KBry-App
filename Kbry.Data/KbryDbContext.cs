@@ -18,6 +18,8 @@ namespace Kbry.Data
         public DbSet<Student> Students { get; set; }
         public DbSet<Class> Classes { get; set; }
         public DbSet<Attendance> Attendances { get; set; }
+        public DbSet<ApiKey> ApiKeys { get; set; }
+
 
         //protected override void OnModelCreating(DbModelBuilder modelBuilder)
         //{
