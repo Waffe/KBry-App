@@ -56,6 +56,10 @@
     <Compile Include="Migrations\201711301243154_AddedAnnotationsForModel.Designer.cs">
       <DependentUpon>201711301243154_AddedAnnotationsForModel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201712071210556_NewMigrations.cs" />
+    <Compile Include="Migrations\201712071210556_NewMigrations.Designer.cs">
+      <DependentUpon>201712071210556_NewMigrations.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\ApiKey.cs" />
     <Compile Include="Model\Attendance.cs" />
@@ -81,6 +85,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201711301243154_AddedAnnotationsForModel.resx">
       <DependentUpon>201711301243154_AddedAnnotationsForModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201712071210556_NewMigrations.resx">
+      <DependentUpon>201712071210556_NewMigrations.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

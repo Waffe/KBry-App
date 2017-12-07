@@ -212,6 +212,11 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201712071123565_NiklasGrejer.cs" />
+    <Compile Include="Migrations\201712071123565_NiklasGrejer.Designer.cs">
+      <DependentUpon>201712071123565_NiklasGrejer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -313,6 +318,11 @@
       <Project>{302ef8bb-a82c-4af8-9830-31e742c6d84d}</Project>
       <Name>Kbry.Data</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201712071123565_NiklasGrejer.resx">
+      <DependentUpon>201712071123565_NiklasGrejer.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
