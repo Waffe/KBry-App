@@ -30,7 +30,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Models\Attendance.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\RegistrationCode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\AttendanceRepository.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Services\FileHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\IAttendanceRepository.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\IRegistrationRepository.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\RegistrationRepository.cs" />

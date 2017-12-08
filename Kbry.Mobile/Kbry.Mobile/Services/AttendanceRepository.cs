@@ -14,8 +14,8 @@ namespace Kbry.Mobile.Services
         public AttendanceRepository()
         {
             var rootFolder = FileSystem.Current.LocalStorage;
-            _folder = FileHelper.GetOrCreateFolderAsync(rootFolder, "attendance").Result;
-            _file = FileHelper.GetOrCreateFileAsync(_folder, "attendance").Result;
+            _folder = rootFolder.CreateFolderAsync("attendance", CreationCollisionOption.OpenIfExists).Result;
+            _file = _folder.CreateFileAsync($"attendance{DateTime.Now:yyyyMMdd}.txt", CreationCollisionOption.OpenIfExists).Result;
         }
 
         public async void AddAttendanceAsync(Attendance attendance)

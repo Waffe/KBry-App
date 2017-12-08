@@ -6,6 +6,7 @@ using Kbry.Mobile.Models;
 using Newtonsoft.Json;
 using PCLStorage;
 
+[assembly: Xamarin.Forms.Dependency(typeof(Kbry.Mobile.Services.RegistrationRepository))]
 namespace Kbry.Mobile.Services
 {
     public class RegistrationRepository : IRegistrationRepository
@@ -16,8 +17,8 @@ namespace Kbry.Mobile.Services
         public RegistrationRepository()
         {
             var rootFolder = FileSystem.Current.LocalStorage;
-            _folder = FileHelper.GetOrCreateFolderAsync(rootFolder, "registration").Result;
-            _file = FileHelper.GetOrCreateFileAsync(_folder, "registration").Result;
+            _folder = rootFolder.CreateFolderAsync("registration", CreationCollisionOption.OpenIfExists).Result;
+            _file = _folder.CreateFileAsync("registration.txt", CreationCollisionOption.OpenIfExists).Result;
         }
 
         public async void ClearFileAsync()
