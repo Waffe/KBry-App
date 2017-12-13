@@ -20,6 +20,8 @@ namespace Kbry.Data.Model
         [Required]
         public string LastName { get; set; }
 
+        public string FullName => $"{FirstName} {LastName}";
+
         [Required]
         [EmailAddress]
         public string Email { get; set; }

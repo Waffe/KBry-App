@@ -5,7 +5,7 @@ using System.Web.Mvc;
 using Kbry.Data;
 using Kbry.Data.Model;
 
-namespace Kbry.Web.Controllers
+namespace Kbry.MVC.Controllers
 {
     public class ClassesController : Controller
     {

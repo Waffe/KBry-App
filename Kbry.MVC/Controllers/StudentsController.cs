@@ -1,5 +1,4 @@
 ﻿using System.Data.Entity;
-using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
@@ -7,7 +6,7 @@ using Kbry.Data;
 using Kbry.Data.Model;
 using Kbry.Data.Repository;
 
-namespace Kbry.Web.Controllers
+namespace Kbry.MVC.Controllers
 {
     public class StudentsController : Controller
     {

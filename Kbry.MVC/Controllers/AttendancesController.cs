@@ -1,50 +1,125 @@
-﻿using System.Linq;
-using System.Web.Http;
-using System.Web.Http.Description;
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.Entity;
+using System.Linq;
+using System.Net;
+using System.Web;
+using System.Web.Mvc;
 using Kbry.Data;
 using Kbry.Data.Model;
 
-namespace Kbry.Web.Controllers
+namespace Kbry.MVC.Controllers
 {
-    public class AttendancesController : ApiController
+    public class AttendancesController : Controller
     {
         private KbryDbContext db = new KbryDbContext();
 
-        // GET: api/Attendances
-        public IQueryable<Attendance> GetAttendances()
+        // GET: Attendances
+        public ActionResult Index(string id)
         {
-            return db.Attendances;
+            if(string.IsNullOrEmpty(id)) return View(db.Attendances.ToList());
+
+            return View(db.Attendances.Include(x=>x.Student).Where(x => x.Student.RegistrationCode == id));
+            
+
         }
 
-        // GET: api/Attendances/5
-        [ResponseType(typeof(Attendance))]
-        public IHttpActionResult GetAttendance(int id)
+
+        // GET: Attendances/Details/5
+        public ActionResult Details(int? id)
         {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
             Attendance attendance = db.Attendances.Find(id);
             if (attendance == null)
             {
-                return NotFound();
+                return HttpNotFound();
             }
-
-            return Ok(attendance);
+            return View(attendance);
         }
 
-
-        // POST: api/Attendances
-        [ResponseType(typeof(Attendance))]
-        public IHttpActionResult PostAttendance(Attendance attendance)
+        // GET: Attendances/Create
+        public ActionResult Create()
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            db.Attendances.Add(attendance);
-            db.SaveChanges();
-
-            return CreatedAtRoute("DefaultApi", new { id = attendance.Id }, attendance);
+            return View();
         }
 
+        // POST: Attendances/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create([Bind(Include = "Id,Date")] Attendance attendance)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Attendances.Add(attendance);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+
+            return View(attendance);
+        }
+
+        // GET: Attendances/Edit/5
+        public ActionResult Edit(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Attendance attendance = db.Attendances.Find(id);
+            if (attendance == null)
+            {
+                return HttpNotFound();
+            }
+            return View(attendance);
+        }
+
+        // POST: Attendances/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit([Bind(Include = "Id,Date")] Attendance attendance)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(attendance).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(attendance);
+        }
+
+        // GET: Attendances/Delete/5
+        public ActionResult Delete(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Attendance attendance = db.Attendances.Find(id);
+            if (attendance == null)
+            {
+                return HttpNotFound();
+            }
+            return View(attendance);
+        }
+
+        // POST: Attendances/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(int id)
+        {
+            Attendance attendance = db.Attendances.Find(id);
+            db.Attendances.Remove(attendance);
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
 
         protected override void Dispose(bool disposing)
         {
@@ -53,11 +128,6 @@ namespace Kbry.Web.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
-        }
-
-        private bool AttendanceExists(int id)
-        {
-            return db.Attendances.Count(e => e.Id == id) > 0;
         }
     }
 }
