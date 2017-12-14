@@ -1,27 +1,42 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using Kbry.Data;
 using Kbry.Data.Model;
+using static System.Data.Entity.Core.Objects.EntityFunctions;
 
 namespace Kbry.MVC.Controllers
 {
+    [RoutePrefix("Attendances")]
     public class AttendancesController : Controller
     {
         private KbryDbContext db = new KbryDbContext();
 
         // GET: Attendances
-        public ActionResult Index(string id)
+        [Route("Index")]
+        public ActionResult Index()
         {
-            if(string.IsNullOrEmpty(id)) return View(db.Attendances.ToList());
+            ViewBag.Title = "All Attendeces";
+            return View(db.Attendances.ToList());           
 
-            return View(db.Attendances.Include(x=>x.Student).Where(x => x.Student.RegistrationCode == id));
-            
+        }
+
+        [Route("Date/{date?}")]
+        public ActionResult GetAttendencesByDay(DateTime date)
+        {
+            ViewBag.Title = $"All Attendeces on {date.ToShortDateString()}";
+            return View("Index", db.Attendances.Where(x => x.Date.Day == date.Day && x.Date.Year == date.Year && x.Date.Month == date.Month).ToList().OrderByDescending(x=>x.Student.Class.Name));
+
+        }
+
+        [Route("Class/{classes}")]
+        public ActionResult GetAttendencesByClass(string classes)
+        {
+            ViewBag.Title = $"All Attendeces from class {classes}";
+            return View("Index", db.Attendances.Where(x=>x.Student.Class.Name == classes).ToList().OrderByDescending(x => x.Student.Class.Name));
 
         }
 
