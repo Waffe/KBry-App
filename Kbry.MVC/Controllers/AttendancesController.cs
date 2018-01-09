@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using Kbry.Data;
 using Kbry.Data.Model;
-using static System.Data.Entity.Core.Objects.EntityFunctions;
 
 namespace Kbry.MVC.Controllers
 {

@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace Kbry.Data.Repository
@@ -20,7 +23,12 @@ namespace Kbry.Data.Repository
             Context.Set<TEntity>().Add(model);
         }
 
-        public virtual async Task<TEntity> GetByIdAsync(int id)
+        public async Task<IEnumerable<TEntity>> GetByPredicate(Expression<Func<TEntity, bool>> filter)
+        {
+            return await Context.Set<TEntity>().Where(filter).ToListAsync();
+        }
+
+        public async Task<TEntity> GetByIdAsync(int id)
         {
             return await Context.Set<TEntity>().FindAsync(id);
         }
