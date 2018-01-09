@@ -6,6 +6,7 @@ using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Web;
 using System.Web.Http;
 using System.Web.Http.Description;
 using Kbry.Data;
@@ -13,68 +14,47 @@ using Kbry.Data.Model;
 
 namespace Kbry.MVC.Controllers
 {
+    [RoutePrefix("api")]
     public class KbryApiController : ApiController
     {
         private KbryDbContext db = new KbryDbContext();
+        HttpContext httpContext = HttpContext.Current;
 
         // GET: api/KbryApi
-        public IQueryable<Attendance> GetAttendances()
+        [Route("GetAllAttendanceDates/{regcode}")]
+        public IQueryable<DateTime> GetAttendances(string regcode)
         {
-            return db.Attendances;
+            AuthorizeApiKey();
+
+            return db.Attendances.Include(x => x.Student).Where(x => x.Student.RegistrationCode == regcode).Select(x=>x.Date);
         }
 
-        // GET: api/KbryApi/5
-        [ResponseType(typeof(Attendance))]
-        public IHttpActionResult GetAttendance(int id)
+        [Route("GetAttendenceDatesByAmount/{regcode}/{amount:int}")]
+        public IQueryable<DateTime> GetLastAttendances(string regcode, int amount)
         {
-            Attendance attendance = db.Attendances.Find(id);
-            if (attendance == null)
-            {
-                return NotFound();
-            }
+            AuthorizeApiKey();
 
-            return Ok(attendance);
+            return db.Attendances.Include(x => x.Student).Where(x => x.Student.RegistrationCode == regcode).Take(amount).Select(x=>x.Date);
         }
 
-        // PUT: api/KbryApi/5
-        [ResponseType(typeof(void))]
-        public IHttpActionResult PutAttendance(int id, Attendance attendance)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
 
-            if (id != attendance.Id)
-            {
-                return BadRequest();
-            }
-
-            db.Entry(attendance).State = EntityState.Modified;
-
-            try
-            {
-                db.SaveChanges();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!AttendanceExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return StatusCode(HttpStatusCode.NoContent);
+        [ResponseType(typeof(Student))]
+        [Route("GetStudentInfo/{regcode}")]
+        public IHttpActionResult GetStudent(string regcode)
+        {           
+            AuthorizeApiKey();
+            var student = db.Students.Include(x=>x.Class).SingleOrDefault(x => x.RegistrationCode == regcode);
+            return Ok(student);
         }
+
+
+
 
         // POST: api/KbryApi
         [ResponseType(typeof(Attendance))]
         public IHttpActionResult PostAttendance(Attendance attendance)
         {
+            AuthorizeApiKey();
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -86,21 +66,7 @@ namespace Kbry.MVC.Controllers
             return CreatedAtRoute("DefaultApi", new { id = attendance.Id }, attendance);
         }
 
-        // DELETE: api/KbryApi/5
-        [ResponseType(typeof(Attendance))]
-        public IHttpActionResult DeleteAttendance(int id)
-        {
-            Attendance attendance = db.Attendances.Find(id);
-            if (attendance == null)
-            {
-                return NotFound();
-            }
 
-            db.Attendances.Remove(attendance);
-            db.SaveChanges();
-
-            return Ok(attendance);
-        }
 
         protected override void Dispose(bool disposing)
         {
@@ -111,9 +77,18 @@ namespace Kbry.MVC.Controllers
             base.Dispose(disposing);
         }
 
-        private bool AttendanceExists(int id)
+
+        private void AuthorizeApiKey()
         {
-            return db.Attendances.Count(e => e.Id == id) > 0;
+            string authHeader = this.httpContext.Request.Headers["Authorization"];
+            
+            var apiGuid = Guid.Parse(authHeader);
+            if (!db.ApiKeys.Any(x => x.Key == apiGuid))
+            {
+                var msg = new HttpResponseMessage(HttpStatusCode.Unauthorized) { ReasonPhrase = "API Key is invalid" };
+                throw new HttpResponseException(msg);
+            }
         }
+
     }
 }

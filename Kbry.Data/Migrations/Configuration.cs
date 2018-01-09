@@ -20,6 +20,7 @@ namespace Kbry.Data.Migrations
             var fittklass = new Class(){Name = "NET16"};
             var fittstudent1 = new Student() { Class = fittklass, Email = "kenisfeenis@gmail.com", FirstName = "Kenan", LastName = "Alic", RegistrationCode = "445566" };
             var fittstudent2 = new Student() { Class = fittklass, Email = "niclasv@gmail.com", FirstName = "Niclas", LastName = "Valfridsson", RegistrationCode = "112233" };
+            
             context.Classes.Add(fittklass);
             context.Students.Add(fittstudent2);
             context.Students.Add(fittstudent1);
@@ -32,6 +33,11 @@ namespace Kbry.Data.Migrations
                 new Attendance() {Student = fittstudent2, Date = DateTime.Parse("2017/10/23 08:30:58") },
                 new Attendance() {Student = fittstudent2, Date = DateTime.Parse("2017/10/24 08:37:58") },
             });
+            if (!context.ApiKeys.Any())
+            {
+                var myguid = Guid.Parse("9546482E-887A-4CAB-A403-AD9C326FFDA5");
+                context.ApiKeys.Add(new ApiKey(){Key = myguid});
+            }
 
             //  This method will be called after migrating to the latest version.
 
