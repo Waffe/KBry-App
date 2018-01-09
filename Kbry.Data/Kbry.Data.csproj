@@ -60,6 +60,10 @@
     <Compile Include="Migrations\201712111410316_ApiKeyAgain.Designer.cs">
       <DependentUpon>201712111410316_ApiKeyAgain.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201712141332225_Seed.cs" />
+    <Compile Include="Migrations\201712141332225_Seed.Designer.cs">
+      <DependentUpon>201712141332225_Seed.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\ApiKey.cs" />
     <Compile Include="Model\Attendance.cs" />
@@ -88,6 +92,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201712111410316_ApiKeyAgain.resx">
       <DependentUpon>201712111410316_ApiKeyAgain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201712141332225_Seed.resx">
+      <DependentUpon>201712141332225_Seed.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

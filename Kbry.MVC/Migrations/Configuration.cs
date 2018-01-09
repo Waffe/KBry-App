@@ -1,3 +1,7 @@
+using Kbry.MVC.Models;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+
 namespace Kbry.MVC.Migrations
 {
     using System;
@@ -14,18 +18,24 @@ namespace Kbry.MVC.Migrations
 
         protected override void Seed(Kbry.MVC.Models.ApplicationDbContext context)
         {
-            //  This method will be called after migrating to the latest version.
+            if (!context.Roles.Any(r => r.Name == "AppAdmin"))
+            {
+                var store = new RoleStore<IdentityRole>(context);
+                var manager = new RoleManager<IdentityRole>(store);
+                var role = new IdentityRole { Name = "AppAdmin" };
 
-            //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
-            //  to avoid creating duplicate seed data. E.g.
-            //
-            //    context.People.AddOrUpdate(
-            //      p => p.FullName,
-            //      new Person { FullName = "Andrew Peters" },
-            //      new Person { FullName = "Brice Lambson" },
-            //      new Person { FullName = "Rowan Miller" }
-            //    );
-            //
+                manager.Create(role);
+            }
+
+            if (!context.Users.Any(u => u.UserName == "kbry2"))
+            {
+                var store = new UserStore<ApplicationUser>(context);
+                var manager = new UserManager<ApplicationUser>(store);
+                var user = new ApplicationUser { UserName = "kbry2", Email = "kbry@kbry.com"};
+
+                manager.Create(user, "bajs-123");
+                manager.AddToRole(user.Id, "AppAdmin");
+            }
         }
     }
 }
