@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
+using System.Device.Location;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -60,6 +61,8 @@ namespace Kbry.MVC.Controllers
                 return BadRequest(ModelState);
             }
 
+            if (!CheckCoordinates(attendance)) return BadRequest("Coordinates out of range");
+
             db.Attendances.Add(attendance);
             db.SaveChanges();
 
@@ -75,6 +78,14 @@ namespace Kbry.MVC.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        private bool CheckCoordinates(Attendance attendance)
+        {
+            var acceptedLocationCoordinate = new GeoCoordinate(57.678897, 12.001500);
+            var attendanceCords = new GeoCoordinate(attendance.Latitude, attendance.Longitude);
+
+            return !(acceptedLocationCoordinate.GetDistanceTo(attendanceCords) > 500);
         }
 
 

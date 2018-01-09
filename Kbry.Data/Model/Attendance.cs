@@ -11,6 +11,10 @@ namespace Kbry.Data.Model
     {
         public int Id { get; set; }
 
+
+        public double Longitude { get; set; }
+        public double Latitude { get; set; }
+
         [Required]
         public DateTime Date { get; set; }
 
