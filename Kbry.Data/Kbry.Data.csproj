@@ -77,7 +77,9 @@
     <Compile Include="Repository\IClassRepository.cs" />
     <Compile Include="Repository\IGenericRepository.cs" />
     <Compile Include="Repository\IStudentRepository.cs" />
+    <Compile Include="Repository\IUnitOfWork.cs" />
     <Compile Include="Repository\StudentRepository.cs" />
+    <Compile Include="Repository\UnitOfWork.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
