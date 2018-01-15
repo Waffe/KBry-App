@@ -23,6 +23,7 @@ namespace Kbry.MVC.Controllers
 
         // GET: api/KbryApi
         [Route("GetAllAttendanceDates/{regcode}")]
+        [HttpGet]
         public IQueryable<DateTime> GetAttendances(string regcode)
         {
             AuthorizeApiKey();
@@ -31,6 +32,7 @@ namespace Kbry.MVC.Controllers
         }
 
         [Route("GetAttendenceDatesByAmount/{regcode}/{amount:int}")]
+        [HttpGet]
         public IQueryable<DateTime> GetLastAttendances(string regcode, int amount)
         {
             AuthorizeApiKey();
@@ -41,6 +43,7 @@ namespace Kbry.MVC.Controllers
 
         [ResponseType(typeof(Student))]
         [Route("GetStudentInfo/{regcode}")]
+        [HttpGet]
         public IHttpActionResult GetStudent(string regcode)
         {           
             AuthorizeApiKey();

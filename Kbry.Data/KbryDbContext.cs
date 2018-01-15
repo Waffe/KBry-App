@@ -12,7 +12,8 @@ namespace Kbry.Data
     {
         public KbryDbContext() : base("KbryDB")
         {
-            
+            this.Configuration.LazyLoadingEnabled = false;
+            this.Configuration.ProxyCreationEnabled = false;
         }
 
         public DbSet<ApiKey> ApiKeys { get; set; }
