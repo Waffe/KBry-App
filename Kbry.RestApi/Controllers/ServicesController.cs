@@ -10,46 +10,29 @@ using System.Web;
 using System.Web.Http;
 using System.Web.Http.Description;
 using Kbry.Data;
-using System.Data.Entity;
+using System.Device.Location;
 using Kbry.Data.Model;
 
 namespace Kbry.RestApi.Controllers
 {
+    [RoutePrefix("api")]
     public class ServicesController : ApiController
     {
         private KbryDbContext db = new KbryDbContext();
         HttpContext httpContext = HttpContext.Current;
 
-        // GET: api/Services
-        [Route("customers")]
+        // GET: api/KbryApi
+        [Route("GetAllAttendanceDates/{regcode}")]
         [HttpGet]
-        public IQueryable<Attendance> GetAttendances()
+        public IQueryable<DateTime> GetAttendances(string regcode)
         {
-            return db.Attendances;
+            AuthorizeApiKey();
+
+            return db.Attendances.Include(x => x.Student).Where(x => x.Student.RegistrationCode == regcode).Select(x => x.Date);
         }
 
-        //[Route("test")]
-        //[HttpGet]
-        //public IQueryable<Student> GetStudents()
-        //{           
-        //    return db.Students;
-        //}
-
-        [Route("test")]
+        [Route("GetAttendenceDatesByAmount/{regcode}/{amount:int}")]
         [HttpGet]
-        public IHttpActionResult GetThingy()
-        {
-            //AuthorizeApiKey();
-            //var student = db.Students.Include(x => x.Class).SingleOrDefault(x => x.RegistrationCode == regcode);
-            //return Ok(student);
-            return Ok(new Student() {FirstName = "Name", LastName = "Last"});
-        }
-
-        public IQueryable<DateTime> GetAttendanceDates(int id)
-        {
-            return db.Attendances.Include(x => x.Student).Where(x => x.Student.Id == id).Select(x => x.Date);
-        }
-
         public IQueryable<DateTime> GetLastAttendances(string regcode, int amount)
         {
             AuthorizeApiKey();
@@ -57,36 +40,47 @@ namespace Kbry.RestApi.Controllers
             return db.Attendances.Include(x => x.Student).Where(x => x.Student.RegistrationCode == regcode).Take(amount).Select(x => x.Date);
         }
 
-        // GET: api/Services/5
-        [ResponseType(typeof(Attendance))]
-        public async Task<IHttpActionResult> GetAttendance(int id)
-        {
-            Attendance attendance = await db.Attendances.FindAsync(id);
-            if (attendance == null)
-            {
-                return NotFound();
-            }
 
-            return Ok(attendance);
+        [ResponseType(typeof(Student))]
+        [Route("GetStudentInfo/{regcode}")]
+        [HttpGet]
+        public IHttpActionResult GetStudent(string regcode)
+        {
+            AuthorizeApiKey();
+            var student = db.Students.Include(x => x.Class).SingleOrDefault(x => x.RegistrationCode == regcode);
+            return Ok(student);
         }
 
 
 
-        // POST: api/Services
+
+        // POST: api/KbryApi
         [ResponseType(typeof(Attendance))]
-        public async Task<IHttpActionResult> PostAttendance(Attendance attendance)
+        [HttpPost]
+        public IHttpActionResult PostAttendance(Attendance attendance)
         {
+            AuthorizeApiKey();
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
+            if (!CheckCoordinates(attendance)) return BadRequest("Coordinates out of range");
+
             db.Attendances.Add(attendance);
-            await db.SaveChangesAsync();
+            db.SaveChanges();
 
             return CreatedAtRoute("DefaultApi", new { id = attendance.Id }, attendance);
         }
 
+
+        private bool CheckCoordinates(Attendance attendance)
+        {
+            var acceptedLocationCoordinate = new GeoCoordinate(57.678897, 12.001500);
+            var attendanceCords = new GeoCoordinate(attendance.Latitude, attendance.Longitude);
+
+            return !(acceptedLocationCoordinate.GetDistanceTo(attendanceCords) > 500);
+        }
 
         private void AuthorizeApiKey()
         {
