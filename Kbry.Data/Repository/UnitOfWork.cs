@@ -1,19 +1,25 @@
 ﻿using System;
+using System.Data.Entity.Core.Objects;
 
 namespace Kbry.Data.Repository
 {
     public class UnitOfWork : IDisposable, IUnitOfWork
     {
-        private readonly KbryDbContext _context = new KbryDbContext();
-        private IClassRepository _classRepository;
-        private IStudentRepository _studentRepository;
-        private IAttendanceRepository _attendanceRepository;
+        private readonly KbryDbContext _context;
 
-        public IClassRepository ClassRepository => _classRepository ?? new ClassRepository(_context);
+        public UnitOfWork()
+        {
+            _context = new KbryDbContext();
+            StudentRepository = new StudentRepository(_context);
+            AttendanceRepository = new AttendanceRepository(_context);
+            ClassRepository = new ClassRepository(_context);
+        }
 
-        public IStudentRepository StudentRepository => _studentRepository ?? new StudentRepository(_context);
+        public IStudentRepository StudentRepository { get; }
 
-        public IAttendanceRepository AttendanceRepository => _attendanceRepository ?? new AttendanceRepository(_context);
+        public IAttendanceRepository AttendanceRepository { get; }
+
+        public IClassRepository ClassRepository { get; }
 
         public void Save()
         {

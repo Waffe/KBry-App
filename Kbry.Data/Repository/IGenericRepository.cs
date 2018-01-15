@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace Kbry.Data.Repository
@@ -10,6 +12,8 @@ namespace Kbry.Data.Repository
         Task SaveAsync();
         bool HasChanges();
         void Add(T model);
-        void Remove(T model);
+        void Remove(int id);
+        void Update(T entityToUpdate);
+        Task<IEnumerable<T>> GetByPredicate(Expression<Func<T, bool>> filter);
     }
 }
