@@ -9,6 +9,7 @@ namespace Kbry.Data.Model
 {
     public class Attendance
     {
+
         public int Id { get; set; }
 
 
@@ -18,7 +19,6 @@ namespace Kbry.Data.Model
         [Required]
         public DateTime Date { get; set; }
 
-        [Required]
-        public virtual Student Student { get; set; }
+        public Student Student { get; set; }
     }
 }

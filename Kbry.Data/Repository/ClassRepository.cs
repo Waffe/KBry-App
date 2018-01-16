@@ -2,7 +2,7 @@
 
 namespace Kbry.Data.Repository
 {
-    public class ClassRepository : GenericRepository<Class, KbryDbContext>, IClassRepository
+    public class ClassRepository : GenericRepository<SchoolClass, KbryDbContext>, IClassRepository
     {
         public ClassRepository(KbryDbContext context)
             : base(context)

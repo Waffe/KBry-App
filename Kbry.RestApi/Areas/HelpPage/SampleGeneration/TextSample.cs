@@ -3,7 +3,7 @@ using System;
 namespace Kbry.RestApi.Areas.HelpPage
 {
     /// <summary>
-    /// This represents a preformatted text sample on the help page. There's a display template named TextSample associated with this class.
+    /// This represents a preformatted text sample on the help page. There's a display template named TextSample associated with this klassen.
     /// </summary>
     public class TextSample
     {

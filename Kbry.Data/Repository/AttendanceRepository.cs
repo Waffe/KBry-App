@@ -15,12 +15,14 @@ namespace Kbry.Data.Repository
 
         public IEnumerable<Attendance> GetAttendancesByDate(DateTime date)
         {
-            return Context.Attendances.Include(a => a.Student).ToList().Where(a => a.Date.Date == date.Date);
+            //return Context.Attendances.Include(a => a.Student).ToList().Where(a => a.Date.Date == date.Date);
+            return null;
         }
 
         public IEnumerable<Attendance> GetAttendancesBetweenDates(DateTime fromDate, DateTime toDate)
         {
-            return Context.Attendances.Include(a => a.Student).ToList().Where(a => a.Date.Date >= fromDate.Date && a.Date.Date <= toDate.Date);
+            //return Context.Attendances.Include(a => a.Student).ToList().Where(a => a.Date.Date >= fromDate.Date && a.Date.Date <= toDate.Date);
+            return null;
         }
 
     }

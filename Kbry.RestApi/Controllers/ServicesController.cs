@@ -27,8 +27,8 @@ namespace Kbry.RestApi.Controllers
         public IQueryable<DateTime> GetAttendances(string regcode)
         {
             AuthorizeApiKey();
-
-            return db.Attendances.Include(x => x.Student).Where(x => x.Student.RegistrationCode == regcode).Select(x => x.Date);
+            //return db.Attendances.Include(x => x.Student).Where(x => x.Student.RegistrationCode == regcode).Select(x => x.Date);
+            return db.Attendances.Include(x=>x.Student).Where(x => x.Student.RegistrationCode == regcode).Select(x => x.Date);
         }
 
         [Route("GetAttendenceDatesByAmount/{regcode}/{amount:int}")]
@@ -37,6 +37,8 @@ namespace Kbry.RestApi.Controllers
         {
             AuthorizeApiKey();
 
+            //return db.Students.FirstOrDefault(x => x.RegistrationCode == regcode).Attendances.Take(amount).Select(x => x.Date)
+            //    .AsQueryable();
             return db.Attendances.Include(x => x.Student).Where(x => x.Student.RegistrationCode == regcode).Take(amount).Select(x => x.Date);
         }
 
@@ -47,7 +49,11 @@ namespace Kbry.RestApi.Controllers
         public IHttpActionResult GetStudent(string regcode)
         {
             AuthorizeApiKey();
-            var student = db.Students.Include(x => x.Class).SingleOrDefault(x => x.RegistrationCode == regcode);
+            var student = db.Students.SingleOrDefault(x => x.RegistrationCode == regcode);
+            if (student == null)
+            {
+                return NotFound();
+            }
             return Ok(student);
         }
 
@@ -87,7 +93,7 @@ namespace Kbry.RestApi.Controllers
             string authHeader = this.httpContext.Request.Headers["Authorization"];
 
             var apiGuid = Guid.Parse(authHeader);
-            if (!db.ApiKeys.Any(x => x.Key == apiGuid))
+            if (db.ApiKeys.ToList().All(x => x.Key != apiGuid))
             {
                 var msg = new HttpResponseMessage(HttpStatusCode.Unauthorized) { ReasonPhrase = "API Key is invalid" };
                 throw new HttpResponseException(msg);

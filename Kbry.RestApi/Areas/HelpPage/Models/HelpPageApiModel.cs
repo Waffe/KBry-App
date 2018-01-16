@@ -12,7 +12,7 @@ namespace Kbry.RestApi.Areas.HelpPage.Models
     public class HelpPageApiModel
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="HelpPageApiModel"/> class.
+        /// Initializes a new instance of the <see cref="HelpPageApiModel"/> klassen.
         /// </summary>
         public HelpPageApiModel()
         {

@@ -26,15 +26,15 @@ namespace Kbry.MVC.Controllers
         public ActionResult GetAttendencesByDay(DateTime date)
         {
             ViewBag.Title = $"All Attendeces on {date.ToShortDateString()}";
-            return View("Index", db.Attendances.Where(x => x.Date.Day == date.Day && x.Date.Year == date.Year && x.Date.Month == date.Month).ToList().OrderByDescending(x=>x.Student.Class.Name));
+            return View("Index", db.Attendances.Where(x => x.Date.Day == date.Day && x.Date.Year == date.Year && x.Date.Month == date.Month).ToList().OrderByDescending(x=>x.Student.Klassen.Name));
 
         }
 
-        [Route("Class/{classes}")]
+        [Route("SchoolClass/{classes}")]
         public ActionResult GetAttendencesByClass(string classes)
         {
-            ViewBag.Title = $"All Attendeces from class {classes}";
-            return View("Index", db.Attendances.Where(x=>x.Student.Class.Name == classes).ToList().OrderByDescending(x => x.Student.Class.Name));
+            ViewBag.Title = $"All Attendeces from klassen {classes}";
+            return View("Index", db.Attendances.Where(x=>x.Student.Klassen.Name == classes).ToList().OrderByDescending(x => x.Student.Klassen.Name));
 
         }
 

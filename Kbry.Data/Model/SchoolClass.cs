@@ -8,14 +8,15 @@ using System.Threading.Tasks;
 
 namespace Kbry.Data.Model
 {
-    public class Class
+    public class SchoolClass
     {
-        public Class() => Students = new Collection<Student>();
 
         public int Id { get; set; }
 
         [Required]
         public string Name { get; set; }
+
         public virtual ICollection<Student> Students { get; set; }
+
     }
 }

@@ -12,14 +12,17 @@ namespace Kbry.Data.Migrations
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
+
+            
         }
 
         protected override void Seed(Kbry.Data.KbryDbContext context)
         {
-            var klass = new Class(){Name = "NET16"};
-            var student1 = new Student() { Class = klass, Email = "kenisfenis@gmail.com", FirstName = "Kenan", LastName = "Alic", RegistrationCode = "445566" };
-            var student2 = new Student() { Class = klass, Email = "niclasv@gmail.com", FirstName = "Niclas", LastName = "Valfridsson", RegistrationCode = "112233" };
+            var klass = new SchoolClass() { Name = "NET16" };
             context.Classes.Add(klass);
+            var student1 = new Student() {Email = "kenisfenis@gmail.com", FirstName = "Kenan", LastName = "Alic", RegistrationCode = "445566",SchoolClass = klass};
+            var student2 = new Student() {Email = "niclasv@gmail.com", FirstName = "Niclas", LastName = "Valfridsson", RegistrationCode = "112233", SchoolClass = klass};
+            
             context.Students.Add(student2);
             context.Students.Add(student1);
 

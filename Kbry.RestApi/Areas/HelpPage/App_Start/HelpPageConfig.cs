@@ -19,7 +19,7 @@ using System.Web.Http.OData;
 namespace Kbry.RestApi.Areas.HelpPage
 {
     /// <summary>
-    /// Use this class to customize the Help Page.
+    /// Use this klassen to customize the Help Page.
     /// For example you can set a custom <see cref="System.Web.Http.Description.IDocumentationProvider"/> to supply the documentation
     /// or you can provide the samples for the requests/responses.
     /// </summary>

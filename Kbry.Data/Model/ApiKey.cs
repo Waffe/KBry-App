@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +13,7 @@ namespace Kbry.Data.Model
         {
             Key = Guid.NewGuid();
         }
+        [Key]
         public int Id { get; set; }
         public Guid Key { get; set; }
     }

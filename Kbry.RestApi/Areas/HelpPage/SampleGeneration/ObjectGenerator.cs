@@ -9,7 +9,7 @@ using System.Reflection;
 namespace Kbry.RestApi.Areas.HelpPage
 {
     /// <summary>
-    /// This class will create an object of a given type and populate it with sample data.
+    /// This klassen will create an object of a given type and populate it with sample data.
     /// </summary>
     public class ObjectGenerator
     {

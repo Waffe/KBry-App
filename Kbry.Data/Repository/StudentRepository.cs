@@ -18,7 +18,7 @@ namespace Kbry.Data.Repository
 
         public IEnumerable<Student> GetStudentsByClass(int classId)
         {
-            return Context.Set<Student>().ToList().Where(s => s.Class.Id == classId);
+            return Context.Set<SchoolClass>().FirstOrDefault(x=>x.Id == classId).Students;
         }
     }
 }

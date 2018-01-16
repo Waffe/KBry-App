@@ -271,7 +271,7 @@ namespace Kbry.RestApi.Areas.HelpPage
 
                     // Example:
                     // [TypeConverter(typeof(PointConverter))]
-                    // public class Point
+                    // public klassen Point
                     // {
                     //     public Point(int x, int y)
                     //     {
@@ -281,14 +281,14 @@ namespace Kbry.RestApi.Areas.HelpPage
                     //     public int X { get; set; }
                     //     public int Y { get; set; }
                     // }
-                    // Class Point is bindable with a TypeConverter, so Point will be added to UriParameters collection.
+                    // SchoolClass Point is bindable with a TypeConverter, so Point will be added to UriParameters collection.
                     // 
-                    // public class Point
+                    // public klassen Point
                     // {
                     //     public int X { get; set; }
                     //     public int Y { get; set; }
                     // }
-                    // Regular complex class Point will have properties X and Y added to UriParameters collection.
+                    // Regular complex klassen Point will have properties X and Y added to UriParameters collection.
                     if (complexTypeDescription != null
                         && !IsBindableWithTypeConverter(parameterType))
                     {

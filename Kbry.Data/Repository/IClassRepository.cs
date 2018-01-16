@@ -7,7 +7,7 @@ using Kbry.Data.Model;
 
 namespace Kbry.Data.Repository
 {
-    public interface IClassRepository : IGenericRepository<Class>
+    public interface IClassRepository : IGenericRepository<SchoolClass>
     {
     }
 }

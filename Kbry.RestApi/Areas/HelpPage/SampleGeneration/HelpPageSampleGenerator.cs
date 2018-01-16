@@ -16,12 +16,12 @@ using Newtonsoft.Json;
 namespace Kbry.RestApi.Areas.HelpPage
 {
     /// <summary>
-    /// This class will generate the samples for the help page.
+    /// This klassen will generate the samples for the help page.
     /// </summary>
     public class HelpPageSampleGenerator
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="HelpPageSampleGenerator"/> class.
+        /// Initializes a new instance of the <see cref="HelpPageSampleGenerator"/> klassen.
         /// </summary>
         public HelpPageSampleGenerator()
         {
