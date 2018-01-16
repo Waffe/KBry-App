@@ -33,6 +33,11 @@ namespace Kbry.Data.Repository
             return await Context.Set<TEntity>().FindAsync(id);
         }
 
+        public TEntity GetById(int id)
+        {
+            return Context.Set<TEntity>().Find(id);
+        }
+
         public async Task<IEnumerable<TEntity>> GetAllAsync()
         {
             return await Context.Set<TEntity>().ToListAsync();
@@ -43,9 +48,9 @@ namespace Kbry.Data.Repository
             return Context.ChangeTracker.HasChanges();
         }
 
-        public void Remove(TEntity model)
+        public void Remove(int id)
         {
-            Context.Set<TEntity>().Remove(model);
+            Context.Set<TEntity>().Remove(GetById(id));
         }
 
         public async Task SaveAsync()

@@ -48,9 +48,6 @@ namespace Kbry.MVC.Controllers
             return Ok(student);
         }
 
-
-
-
         // POST: api/KbryApi
         [ResponseType(typeof(Attendance))]
         public IHttpActionResult PostAttendance(Attendance attendance)
@@ -68,8 +65,6 @@ namespace Kbry.MVC.Controllers
 
             return CreatedAtRoute("DefaultApi", new { id = attendance.Id }, attendance);
         }
-
-
 
         protected override void Dispose(bool disposing)
         {
@@ -100,6 +95,5 @@ namespace Kbry.MVC.Controllers
                 throw new HttpResponseException(msg);
             }
         }
-
     }
 }

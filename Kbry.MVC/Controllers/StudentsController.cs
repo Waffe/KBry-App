@@ -1,33 +1,51 @@
-﻿using System.Data.Entity;
+﻿using System;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using Kbry.Data;
 using Kbry.Data.Model;
 using Kbry.Data.Repository;
+using Microsoft.Ajax.Utilities;
 
 namespace Kbry.MVC.Controllers
 {
     public class StudentsController : Controller
     {
         private KbryDbContext db = KbryDbContext.Create();
-        private IStudentRepository repo = new StudentRepository(KbryDbContext.Create());
+        private readonly IUnitOfWork _unitOfWork = new UnitOfWork();
+        private readonly IStudentRepository _repo;
 
-        // GET: Students
-        public async Task<ActionResult> Index()
+        public StudentsController()
         {
-            //return View(db.Students.ToList());
-            return View(await repo.GetAllAsync());
+            _repo = _unitOfWork.StudentRepository;
         }
 
+        // GET: Students
+        public async Task<ActionResult> Index(string searchString)
+        {
+            if (!searchString.IsNullOrWhiteSpace())
+            {
+                var formattedSearchString = searchString.ToLower().Trim();
+                
+                return View(await _repo.GetByPredicate(
+                    s => ((s.FirstName.ToLower() + " " + s.LastName.ToLower()).Contains(formattedSearchString)
+                                        || s.Email.ToLower().Contains(formattedSearchString)
+                                        || s.Class.Name.ToLower().Contains(formattedSearchString)
+                                        || s.RegistrationCode.ToLower().Contains(formattedSearchString)
+                                        || s.RegistrationCode.ToLower().Contains(formattedSearchString))));
+            }
+            return View(await _repo.GetAllAsync());
+        }
+
+
         // GET: Students/Details/5
-        public ActionResult Details(int? id)
+        public async Task<ActionResult> Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Student student = db.Students.Find(id);
+            Student student = await _repo.GetByIdAsync(Convert.ToInt32(id));
             if (student == null)
             {
                 return HttpNotFound();
@@ -82,21 +100,21 @@ namespace Kbry.MVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(student).State = EntityState.Modified;
-                db.SaveChanges();
+                _repo.Update(student);
+                _unitOfWork.Save();
                 return RedirectToAction("Index");
             }
             return View(student);
         }
 
         // GET: Students/Delete/5
-        public ActionResult Delete(int? id)
+        public async Task<ActionResult> Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Student student = db.Students.Find(id);
+            Student student = await _repo.GetByIdAsync(Convert.ToInt32(id));
             if (student == null)
             {
                 return HttpNotFound();
@@ -110,18 +128,20 @@ namespace Kbry.MVC.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Student student = db.Students.Find(id);
-            db.Students.Remove(student);
-            db.SaveChanges();
+            if (student == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            _repo.Remove(id);
+            _unitOfWork.Save();
             return RedirectToAction("Index");
         }
 
-        protected override void Dispose(bool disposing)
+        [HttpGet]
+        public async Task<ActionResult> FindStudent(string searchString)
         {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
+            var foundStudents = await _repo.GetByPredicate(s => s.FirstName.ToLower().Contains(searchString.ToLower()));
+            return RedirectToAction("Index", new { students = foundStudents });
         }
     }
 }

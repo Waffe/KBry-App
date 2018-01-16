@@ -14,7 +14,3 @@
 th:hover {
      cursor: pointer;
 }
-
-.custom-logo {
-    background-image: url('../Resources/icon1.png');
-}
