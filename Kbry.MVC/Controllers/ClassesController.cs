@@ -24,12 +24,12 @@ namespace Kbry.MVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Class @class = db.Classes.Find(id);
-            if (@class == null)
+            SchoolClass schoolClass = db.Classes.Find(id);
+            if (schoolClass == null)
             {
                 return HttpNotFound();
             }
-            return View(@class);
+            return View(schoolClass);
         }
 
         // GET: Classes/Create
@@ -43,16 +43,16 @@ namespace Kbry.MVC.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name")] Class @class)
+        public ActionResult Create([Bind(Include = "Id,Name")] SchoolClass schoolClass)
         {
             if (ModelState.IsValid)
             {
-                db.Classes.Add(@class);
+                db.Classes.Add(schoolClass);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(@class);
+            return View(schoolClass);
         }
 
         // GET: Classes/Edit/5
@@ -62,12 +62,12 @@ namespace Kbry.MVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Class @class = db.Classes.Find(id);
-            if (@class == null)
+            SchoolClass schoolClass = db.Classes.Find(id);
+            if (schoolClass == null)
             {
                 return HttpNotFound();
             }
-            return View(@class);
+            return View(schoolClass);
         }
 
         // POST: Classes/Edit/5
@@ -75,15 +75,15 @@ namespace Kbry.MVC.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name")] Class @class)
+        public ActionResult Edit([Bind(Include = "Id,Name")] SchoolClass schoolClass)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(@class).State = EntityState.Modified;
+                db.Entry(schoolClass).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(@class);
+            return View(schoolClass);
         }
 
         // GET: Classes/Delete/5
@@ -93,12 +93,12 @@ namespace Kbry.MVC.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Class @class = db.Classes.Find(id);
-            if (@class == null)
+            SchoolClass schoolClass = db.Classes.Find(id);
+            if (schoolClass == null)
             {
                 return HttpNotFound();
             }
-            return View(@class);
+            return View(schoolClass);
         }
 
         // POST: Classes/Delete/5
@@ -106,8 +106,8 @@ namespace Kbry.MVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Class @class = db.Classes.Find(id);
-            db.Classes.Remove(@class);
+            SchoolClass schoolClass = db.Classes.Find(id);
+            db.Classes.Remove(schoolClass);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

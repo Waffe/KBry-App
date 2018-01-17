@@ -23,28 +23,38 @@ namespace Kbry.MVC.Controllers
 
         // GET: api/KbryApi
         [Route("GetAllAttendanceDates/{regcode}")]
+        [HttpGet]
         public IQueryable<DateTime> GetAttendances(string regcode)
         {
             AuthorizeApiKey();
-
-            return db.Attendances.Include(x => x.Student).Where(x => x.Student.RegistrationCode == regcode).Select(x=>x.Date);
+            //return db.Attendances.Include(x => x.Student).Where(x => x.Student.RegistrationCode == regcode).Select(x => x.Date);
+            return db.Students.FirstOrDefault(x => x.RegistrationCode == regcode).Attendances.Select(x => x.Date)
+                .AsQueryable();
         }
 
         [Route("GetAttendenceDatesByAmount/{regcode}/{amount:int}")]
+        [HttpGet]
         public IQueryable<DateTime> GetLastAttendances(string regcode, int amount)
         {
             AuthorizeApiKey();
 
-            return db.Attendances.Include(x => x.Student).Where(x => x.Student.RegistrationCode == regcode).Take(amount).Select(x=>x.Date);
+            //return db.Students.FirstOrDefault(x => x.RegistrationCode == regcode).Attendances.Take(amount).Select(x => x.Date)
+            //    .AsQueryable();
+            return db.Students.FirstOrDefault(x => x.RegistrationCode == regcode).Attendances.Select(x => x.Date).AsQueryable();
         }
 
 
         [ResponseType(typeof(Student))]
         [Route("GetStudentInfo/{regcode}")]
+        [HttpGet]
         public IHttpActionResult GetStudent(string regcode)
-        {           
+        {
             AuthorizeApiKey();
-            var student = db.Students.Include(x=>x.Class).SingleOrDefault(x => x.RegistrationCode == regcode);
+            var student = db.Students.SingleOrDefault(x => x.RegistrationCode == regcode);
+            if (student == null)
+            {
+                return NotFound();
+            }
             return Ok(student);
         }
 

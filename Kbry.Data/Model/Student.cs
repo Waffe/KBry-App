@@ -6,8 +6,6 @@ namespace Kbry.Data.Model
 {
     public class Student
     {
-        public Student() => Attendances = new Collection<Attendance>();
-
         public int Id { get; set; }
 
         [Required]
@@ -20,12 +18,14 @@ namespace Kbry.Data.Model
         [Required]
         public string LastName { get; set; }
 
-        public string FullName => $"{FirstName} {LastName}";
-
         [Required]
         [EmailAddress]
         public string Email { get; set; }
-        public virtual Class Class { get; set; }
+
+
+        public SchoolClass SchoolClass { get; set; }
+
         public virtual ICollection<Attendance> Attendances { get; set; }
+
     }
 }

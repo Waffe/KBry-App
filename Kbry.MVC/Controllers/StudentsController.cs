@@ -30,7 +30,7 @@ namespace Kbry.MVC.Controllers
                 return View(await _repo.GetByPredicate(
                     s => ((s.FirstName.ToLower() + " " + s.LastName.ToLower()).Contains(formattedSearchString)
                                         || s.Email.ToLower().Contains(formattedSearchString)
-                                        || s.Class.Name.ToLower().Contains(formattedSearchString)
+                                        || s.SchoolClass.Name.ToLower().Contains(formattedSearchString)
                                         || s.RegistrationCode.ToLower().Contains(formattedSearchString)
                                         || s.RegistrationCode.ToLower().Contains(formattedSearchString))));
             }
