@@ -4,7 +4,29 @@
 }
 <h2><i class="fa fa-clock-o" aria-hidden="true"></i> Attendances</h2>
 
-<input type="text" name="daterange" value="01/01/2015 - 01/31/2015" />
+
+
+<div style="max-width: 300px">
+    <h4>Start date</h4>
+    @(Html.Kendo().DatePicker()
+                      .Name("start")
+                      .Value(DateTime.Today)
+                      .Max(DateTime.Today)
+                      .ParseFormats(new string[] { "MM/dd/yyyy" })
+                      .Events(e => e.Change("startChange"))
+                      .HtmlAttributes(new { style = "width:100%;" })
+    )
+    <hr />
+    <h4>Start date</h4>
+    @(Html.Kendo().DatePicker()
+                      .Name("end")
+                      .Value(DateTime.Today)
+                      .Min(DateTime.Today)
+                      .ParseFormats(new string[] { "MM/dd/yyyy" })
+                      .Events(e => e.Change("endChange"))
+                      .HtmlAttributes(new { style = "width:100%;" })
+    )
+</div>
 <table class="table table-striped table-condensed" id="sortable-table">
     <tr>
         <th onclick="sortTable(0)">
@@ -31,9 +53,32 @@
                 @Html.DisplayFor(modelItem => item.Student.FirstName)
             </td>
             <td>
-            @Html.DisplayFor(modelItem => item.Student.SchoolClass.Name)
+                @Html.DisplayFor(modelItem => item.Student.SchoolClass.Name)
             </td>
         </tr>
     }
 
 </table>
+<script>
+    function startChange() {
+        var endPicker = $("#end").data("kendoDateTimePicker"),
+            startDate = this.value();
+
+        if (startDate) {
+            startDate = new Date(startDate);
+            startDate.setDate(startDate.getDate() + 1);
+            endPicker.min(startDate);
+        }
+    }
+
+    function endChange() {
+        var startPicker = $("#start").data("kendoDateTimePicker"),
+            endDate = this.value();
+
+        if (endDate) {
+            endDate = new Date(endDate);
+            endDate.setDate(endDate.getDate() - 1);
+            startPicker.max(endDate);
+        }
+    }
+</script>

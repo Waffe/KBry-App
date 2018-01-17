@@ -1,4 +1,5 @@
-﻿@model IEnumerable<Kbry.Data.Model.Student>
+﻿@using Kbry.MVC.ViewModels
+@model IEnumerable<Kbry.MVC.ViewModels.StudentViewModel>
 
 @{
     ViewBag.Title = "Students";
@@ -6,61 +7,101 @@
 
 <h2><i class="fa fa-graduation-cap" aria-hidden="true"></i> Students</h2>
 
-<div class="form-group form-inline">
-    @using (Html.BeginForm("Index", "Students"))
-    {
-        @Html.TextBox("searchString", null, new { @class = "form-control" });
-        <input type="submit" value="Sök" class="form-control">
-    }
-</div>
+@(Html.Kendo().AutoComplete().Name("search")
+      .Filter(FilterType.Contains)
+      .Placeholder("Search for student...")
+      .Template("<span student-id='${ data.Id }'>${ data.FullName }</span>")
+      .MinLength(3)
+      .DataSource(dataSource => dataSource
+          .Read(read => read.Action("Customers_Read", "Students")
+          )
+          .ServerFiltering(true)
+      )
+      .DataTextField("FullName")
+      .Events(events => events.Select("window.SearchBox_Select")))
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table table-striped table-condensed" id="sortable-table">
-    <tr>
-        <th onclick="sortTable(0)">
-            @Html.DisplayNameFor(model => model.RegistrationCode)
-        </th>
-        <th onclick="sortTable(1)">
-            @Html.DisplayNameFor(model => model.SchoolClass)
-        </th>
-        <th onclick="sortTable(2)">
-            @Html.DisplayNameFor(model => model.FirstName)
-        </th>
-        <th onclick="sortTable(3)">
-            @Html.DisplayNameFor(model => model.LastName)
-        </th>
-        <th onclick="sortTable(4)">
-            @Html.DisplayNameFor(model => model.Email)
-        </th>
-        <th></th>
-    </tr>
 
-    @foreach (var item in Model)
-    {
+@*<p>
+        @Html.ActionLink("Create New", "Create")
+    </p>
+    <table class="table table-striped table-condensed" id="sortable-table">
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.RegistrationCode)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SchoolClass.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FirstName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LastName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-            </td>
+            <th onclick="sortTable(0)">
+                @Html.DisplayNameFor(model => model.RegistrationCode)
+            </th>
+            <th onclick="sortTable(1)">
+                @Html.DisplayNameFor(model => model.SchoolClass)
+            </th>
+            <th onclick="sortTable(2)">
+                @Html.DisplayNameFor(model => model.FullName)
+            </th>
+            <th onclick="sortTable(3)">
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th></th>
         </tr>
-    }
 
-</table>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RegistrationCode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SchoolClass.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FullName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                </td>
+            </tr>
+        }*@
+
+@(Html.Kendo().Grid<StudentViewModel>()
+                  .Name("grid")
+                  .Columns(columns =>
+                  {
+                      columns.Bound(s => s.FullName);
+                      columns.Bound(s => s.Email);
+                      columns.Bound(s => s.SchoolClass);
+                      columns.Bound(s => s.RegistrationCode).Width(150);
+                      columns.Command(command => { command.Edit(); command.Destroy(); }).Width(250);
+                  })
+                  .HtmlAttributes(new { style = "height: 550px;" })
+                  .Scrollable()
+                  .Groupable()
+                  .Sortable()
+                  .ToolBar(toolbar => toolbar.Create())
+                  .Editable(editable => editable.Mode(GridEditMode.PopUp))
+                  .Pageable(pageable => pageable
+                      .Refresh(true)
+                      .PageSizes(true)
+                      .ButtonCount(5))
+                  .DataSource(dataSource => dataSource
+                      .Ajax()
+                      .Read(read => read.Action("Customers_Read", "Students"))
+                      .PageSize(15)
+                  .Model(model => model.Id(s => s.Email))
+                  .Create(update => update.Action("EditingPopup_Create", "Students"))
+                  .Read(read => read.Action("EditingPopup_Read", "Students"))
+                  .Update(update => update.Action("EditingPopup_Update", "Students"))
+                  .Destroy(update => update.Action("EditingPopup_Destroy", "Students"))
+
+                  )
+)
+
+@*</table>*@
+<script>
+    window.Search = {
+        settings: {
+            actionUrl: "/Students/EditingPopup_Create"
+        }
+    };
+</script>

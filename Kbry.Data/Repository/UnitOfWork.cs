@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Data.Entity.Core.Objects;
+using System.Data.Entity.Infrastructure;
+using System.Linq;
 
 namespace Kbry.Data.Repository
 {
-    public class UnitOfWork : IDisposable, IUnitOfWork
+    public class UnitOfWork : IUnitOfWork
     {
         private readonly KbryDbContext _context;
 
