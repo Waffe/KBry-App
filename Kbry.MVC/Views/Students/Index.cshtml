@@ -23,7 +23,7 @@
             @Html.DisplayNameFor(model => model.RegistrationCode)
         </th>
         <th onclick="sortTable(1)">
-            @Html.DisplayNameFor(model => model.Class)
+            @Html.DisplayNameFor(model => model.SchoolClass)
         </th>
         <th onclick="sortTable(2)">
             @Html.DisplayNameFor(model => model.FirstName)
@@ -44,7 +44,7 @@
                 @Html.DisplayFor(modelItem => item.RegistrationCode)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Class.Name)
+                @Html.DisplayFor(modelItem => item.SchoolClass.Name)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.FirstName)

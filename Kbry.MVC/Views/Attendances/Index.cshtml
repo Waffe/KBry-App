@@ -11,10 +11,10 @@
             @Html.DisplayNameFor(model => model.Date)
         </th>
         <th onclick="sortTable(1)">
-            @Html.DisplayNameFor(model => model.Student.FullName)
+            @Html.DisplayNameFor(model => model.Student)
         </th>
         <th onclick="sortTable(2)">
-            @Html.DisplayNameFor(model => model.Student.Class.Name)
+            @Html.DisplayNameFor(model => model.Student.SchoolClass)
         </th>
         <th>
 
@@ -28,10 +28,10 @@
                 @Html.DisplayFor(modelItem => item.Date)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Student.FullName)
+                @Html.DisplayFor(modelItem => item.Student.FirstName)
             </td>
             <td>
-            @Html.DisplayFor(modelItem => item.Student.Class.Name)
+            @Html.DisplayFor(modelItem => item.Student.SchoolClass.Name)
             </td>
         </tr>
     }
