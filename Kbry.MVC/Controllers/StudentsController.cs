@@ -19,44 +19,17 @@ namespace Kbry.MVC.Controllers
     public class StudentsController : Controller
     {
         private readonly KbryDbContext _db = KbryDbContext.Create();
-        //private readonly IUnitOfWork _unitOfWork = new UnitOfWork();
-        //private readonly IStudentRepository _repo;
 
         public StudentsController()
         {
-            //var svej = _db.Attendances.FirstOrDefault(a => a.Id == 6);
-            //if (svej != null)
-            //    _db.Attendances.Remove(svej);
-            
-
-            //var hej = _db.Students.FirstOrDefault(s => s.Id == 6);
-            //if (hej != null)
-            //    _db.Students.Remove(hej);
-
-            //_db.SaveChanges();
         }
 
-        // GET: Students
         public ActionResult Index(string searchString)
         {
-            //if (!searchString.IsNullOrWhiteSpace())
-            //{
-            //    IEnumerable<Student> foundStudents =FindStudents(searchString);
-
-            //    return View(foundStudents.Select(ConvertToViewModel));
-            //}
-
-            //var allStudents = _db.Students;
-            //var allStudentsVM = new List<StudentViewModel>();
-
-            //foreach (var student in allStudents)
-            //{
-            //    allStudentsVM.Add(ConvertToViewModel(student));
-            //}
             return View();
         }
 
-        public async Task<ActionResult> Customers_Read([DataSourceRequest]DataSourceRequest request)
+        public async Task<ActionResult> GetStudents([DataSourceRequest]DataSourceRequest request)
         {
             var allStudents = await _db.Students.ToListAsync();
             var allStudentsVM = new List<StudentViewModel>();
@@ -68,148 +41,11 @@ namespace Kbry.MVC.Controllers
             return Json(allStudentsVM.ToDataSourceResult(request));
         }
 
-        private IEnumerable<Student> FindStudents(string searchString)
-        {
-            var formattedSearchString = searchString.ToLower().Trim();
-            var foundStudents = _db.Students.Where(
-                s => ((s.FirstName.ToLower() + " " + s.LastName.ToLower()).Contains(formattedSearchString)
-                      || s.Email.ToLower().Contains(formattedSearchString)
-                      || s.SchoolClass.Name.ToLower().Contains(formattedSearchString)
-                      || s.RegistrationCode.ToLower().Contains(formattedSearchString)
-                      || s.RegistrationCode.ToLower().Contains(formattedSearchString)));
-            return foundStudents;
-        }
-
-
-        // GET: Students/Details/5
-        //public async Task<ActionResult> Details(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    Student student = await _repo.GetByIdAsync(Convert.ToInt32(id));
-        //    if (student == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //    return View(student);
-        //}
-
-        private StudentViewModel ConvertToViewModel(Student s)
-        {
-            return new StudentViewModel()
-            {
-                Id = s.Id,
-                FullName = $"{s.LastName}, {s.FirstName}",
-                Email = s.Email,
-                RegistrationCode = s.RegistrationCode,
-                Attendances = s.Attendances,
-                SchoolClassName = s.SchoolClass?.Name ?? string.Empty
-            };
-        }
-
-        private IEnumerable<StudentViewModel> ConvertManyToViewModel(IEnumerable<Student> students)
-        {
-            var studentViewModels = new List<StudentViewModel>();
-
-            foreach (var student in students)
-            {
-                studentViewModels.Add(ConvertToViewModel(student));
-            }
-
-            return studentViewModels;
-        }
-
-        // GET: Students/Create
-        //public ActionResult Create()
-        //{
-        //    return View();
-        //}
-
-        //// POST: Students/Create
-        //// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        //// more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Create([Bind(Include = "Id,RegistrationCode,FirstName,LastName,Email")] Student student)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        _db.Students.Add(student);
-        //        _db.SaveChanges();
-        //        return RedirectToAction("Index");
-        //    }
-
-        //    return View(student);
-        //}
-
-        // GET: Students/Edit/5
-        //public ActionResult Edit(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    Student student = _db.Students.Find(id);
-        //    if (student == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //    return View(student);
-        //}
-
-        //// POST: Students/Edit/5
-        //// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        //// more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Edit([Bind(Include = "Id,RegistrationCode,FirstName,LastName,Email")] Student student)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        _repo.Update(student);
-        //        _unitOfWork.Save();
-        //        return RedirectToAction("Index");
-        //    }
-        //    return View(student);
-        //}
-
-        // GET: Students/Delete/5
-        //public async Task<ActionResult> Delete(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    Student student = await _repo.GetByIdAsync(Convert.ToInt32(id));
-        //    if (student == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //    return View(student);
-        //}
-
-        //// POST: Students/Delete/5
-        //[HttpPost, ActionName("Delete")]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult DeleteConfirmed(int id)
-        //{
-        //    Student student = _db.Students.Find(id);
-        //    if (student == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    _repo.Remove(id);
-        //    _unitOfWork.Save();
-        //    return RedirectToAction("Index");
-        //}
-
 
         public ActionResult EditingPopup_Read([DataSourceRequest] DataSourceRequest request, string searchString)
         {
             var students = _db.Students.Include(s => s.SchoolClass).ToList();
-            
+
             var studentViewModels = ConvertManyToViewModel(students).ToList();
             return Json(studentViewModels.ToDataSourceResult(request));
         }
@@ -227,18 +63,6 @@ namespace Kbry.MVC.Controllers
             return Json(new[] { student }.ToDataSourceResult(request, ModelState));
         }
 
-        private Student ConvertToModel(StudentViewModel student)
-        {
-            return new Student()
-            {
-                LastName = student.FullName.Split(' ').First().Trim(','),
-                FirstName = student.FullName.Split(' ').Last().Trim(','),
-                Email = student.Email,
-                Attendances = student.Attendances,
-                RegistrationCode = student.RegistrationCode
-                //SchoolClass = student.SchoolClassName
-            };
-        }
 
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult EditingPopup_Update([DataSourceRequest] DataSourceRequest request, StudentViewModel student)
@@ -251,7 +75,7 @@ namespace Kbry.MVC.Controllers
                 edited.LastName = student.FullName.Split(' ').Last().Trim(',');
                 edited.Email = student.Email;
                 edited.Attendances = student.Attendances;
-                //edited.SchoolClass = student.SchoolClass;
+                edited.SchoolClass = _db.Classes.FirstOrDefault(c => c.Id == student.SchoolClassId);
                 _db.Students.AddOrUpdate(edited);
                 _db.SaveChanges();
             }
@@ -270,6 +94,65 @@ namespace Kbry.MVC.Controllers
             }
 
             return Json(new[] { student }.ToDataSourceResult(request, ModelState));
+        }
+
+        private Student ConvertToModel(StudentViewModel student)
+        {
+            return new Student()
+            {
+                LastName = student.FullName.Split(' ').Last().Trim(','),
+                FirstName = student.FullName.Split(' ').First().Trim(','),
+                Email = student.Email,
+                Attendances = student.Attendances,
+                RegistrationCode = student.RegistrationCode,
+                SchoolClass = _db.Classes.FirstOrDefault(c => c.Id == Convert.ToInt32(student.SchoolClassId))
+            };
+        }
+
+        private IEnumerable<StudentViewModel> ConvertManyToViewModel(IEnumerable<Student> students)
+        {
+            var studentViewModels = new List<StudentViewModel>();
+
+            foreach (var student in students)
+            {
+                studentViewModels.Add(ConvertToViewModel(student));
+            }
+
+            return studentViewModels;
+        }
+
+        private StudentViewModel ConvertToViewModel(Student s)
+        {
+            return new StudentViewModel()
+            {
+                Id = s.Id,
+                FirstName = s.FirstName,
+                LastName = s.LastName,
+                Email = s.Email,
+                RegistrationCode = s.RegistrationCode,
+                Attendances = s.Attendances,
+                SchoolClassName = s.SchoolClass?.Name ?? string.Empty,
+                SchoolClassId = s.SchoolClass?.Id
+            };
+        }
+
+        private IEnumerable<Student> FindStudents(string searchString)
+        {
+
+            var formattedSearchString = searchString.ToLower().Trim();
+            var foundStudents = _db.Students.Where(
+                s => ((s.FirstName.ToLower() + " " + s.LastName.ToLower()).Contains(formattedSearchString)
+                      || s.Email.ToLower().Contains(formattedSearchString)
+                      || s.SchoolClass.Name.ToLower().Contains(formattedSearchString)
+                      || s.RegistrationCode.ToLower().Contains(formattedSearchString)
+                      || s.RegistrationCode.ToLower().Contains(formattedSearchString)));
+            return foundStudents;
+        }
+
+        public ActionResult GetClasses()
+        {
+            var schoolClasses = _db.Classes.ToList();
+            return Json(schoolClasses, JsonRequestBehavior.AllowGet);
         }
     }
 }
