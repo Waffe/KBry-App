@@ -25,7 +25,7 @@ namespace Kbry.MVC.ViewModels
         public string Email { get; set; }
 
         [Display(Name = "Class")]
-        public SchoolClass SchoolClass { get; set; }
+        public string SchoolClassName { get; set; }
 
         public ICollection<Attendance> Attendances { get; set; }
     }

@@ -24,7 +24,16 @@ namespace Kbry.MVC.Controllers
 
         public StudentsController()
         {
-            //_repo = _unitOfWork.StudentRepository;
+            //var svej = _db.Attendances.FirstOrDefault(a => a.Id == 6);
+            //if (svej != null)
+            //    _db.Attendances.Remove(svej);
+            
+
+            //var hej = _db.Students.FirstOrDefault(s => s.Id == 6);
+            //if (hej != null)
+            //    _db.Students.Remove(hej);
+
+            //_db.SaveChanges();
         }
 
         // GET: Students
@@ -96,7 +105,7 @@ namespace Kbry.MVC.Controllers
                 Email = s.Email,
                 RegistrationCode = s.RegistrationCode,
                 Attendances = s.Attendances,
-                SchoolClass = s.SchoolClass
+                SchoolClassName = s.SchoolClass?.Name ?? string.Empty
             };
         }
 
@@ -199,7 +208,7 @@ namespace Kbry.MVC.Controllers
 
         public ActionResult EditingPopup_Read([DataSourceRequest] DataSourceRequest request, string searchString)
         {
-            var students = _db.Students.ToList();
+            var students = _db.Students.Include(s => s.SchoolClass).ToList();
             
             var studentViewModels = ConvertManyToViewModel(students).ToList();
             return Json(studentViewModels.ToDataSourceResult(request));
@@ -226,8 +235,8 @@ namespace Kbry.MVC.Controllers
                 FirstName = student.FullName.Split(' ').Last().Trim(','),
                 Email = student.Email,
                 Attendances = student.Attendances,
-                RegistrationCode = student.RegistrationCode,
-                SchoolClass = student.SchoolClass
+                RegistrationCode = student.RegistrationCode
+                //SchoolClass = student.SchoolClassName
             };
         }
 
@@ -242,7 +251,7 @@ namespace Kbry.MVC.Controllers
                 edited.LastName = student.FullName.Split(' ').Last().Trim(',');
                 edited.Email = student.Email;
                 edited.Attendances = student.Attendances;
-                edited.SchoolClass = student.SchoolClass;
+                //edited.SchoolClass = student.SchoolClass;
                 _db.Students.AddOrUpdate(edited);
                 _db.SaveChanges();
             }
