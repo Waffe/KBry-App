@@ -1,31 +1,31 @@
 ﻿@model Kbry.MVC.ViewModels.StudentViewModel
 
 <div class="forEdit">
-    <h3>Edit Student</h3>
+    <h3 style="margin-left: 15px">Edit Student</h3>
     <br />
     @Html.HiddenFor(model => model.Id)
-    <div>
+    <div style="margin:15px">
         @Html.LabelFor(model => model.FirstName)
     </div>
-    <div>
+    <div style="margin:15px">
         @Html.EditorFor(model => model.FirstName)
         @Html.ValidationMessageFor(model => model.FirstName)
     </div>
-    <div>
+    <div style="margin:15px">
         @Html.LabelFor(model => model.LastName)
     </div>
-    <div>
+    <div style="margin:15px">
         @Html.EditorFor(model => model.LastName)
         @Html.ValidationMessageFor(model => model.LastName)
     </div>
-    <div>
+    <div style="margin:15px">
         @Html.LabelFor(model => model.Email)
     </div>
-    <div>
+    <div style="margin:15px">
         @Html.EditorFor(model => model.Email)
         @Html.ValidationMessageFor(model => model.Email)
     </div>
-    <div class="demo-section k-content">
+    <div class="demo-section k-content" style="margin:15px">
         @Html.LabelFor(model => model.SchoolClassName)
         @(Html.Kendo().DropDownList()
               .Name("schoolClasses")
@@ -42,10 +42,10 @@
               )
 
     </div>
-    <div>
+    <div style="margin:15px">
         @Html.LabelFor(model => model.RegistrationCode)
     </div>
-    <div>
+    <div style="margin:15px">
         @Html.EditorFor(model => model.RegistrationCode)
         @Html.ValidationMessageFor(model => model.RegistrationCode)
     </div>
