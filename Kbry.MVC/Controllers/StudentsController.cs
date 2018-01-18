@@ -24,23 +24,9 @@ namespace Kbry.MVC.Controllers
 
         public async Task<ActionResult> GetStudents([DataSourceRequest]DataSourceRequest request)
         {
-            var allStudents = await _db.Students.ToListAsync();
-            var allStudentsVM = new List<StudentViewModel>();
-
-            foreach (var student in allStudents)
-            {
-                allStudentsVM.Add(ConvertToViewModel(student));
-            }
+            var allStudents = await _db.Students.Include(s => s.SchoolClass).ToListAsync();
+            var allStudentsVM = ConvertManyToViewModel(allStudents);
             return Json(allStudentsVM.ToDataSourceResult(request));
-        }
-
-
-        public ActionResult EditingPopup_Read([DataSourceRequest] DataSourceRequest request, string searchString)
-        {
-            var students = _db.Students.Include(s => s.SchoolClass).ToList();
-
-            var studentViewModels = ConvertManyToViewModel(students).ToList();
-            return Json(studentViewModels.ToDataSourceResult(request));
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
@@ -64,8 +50,8 @@ namespace Kbry.MVC.Controllers
             {
                 var edited = _db.Students.FirstOrDefault(s => s.Id == student.Id);
                 edited.Id = student.Id;
-                edited.FirstName = student.FullName.Split(' ').First().Trim(',');
-                edited.LastName = student.FullName.Split(' ').Last().Trim(',');
+                edited.FirstName = student.FirstName;
+                edited.LastName = student.LastName;
                 edited.Email = student.Email;
                 edited.Attendances = student.Attendances;
                 edited.SchoolClass = _db.Classes.FirstOrDefault(c => c.Id == student.SchoolClassId);
@@ -93,8 +79,8 @@ namespace Kbry.MVC.Controllers
         {
             return new Student()
             {
-                LastName = student.FullName.Split(' ').Last().Trim(','),
-                FirstName = student.FullName.Split(' ').First().Trim(','),
+                LastName = student.LastName,
+                FirstName = student.FirstName,
                 Email = student.Email,
                 Attendances = student.Attendances,
                 RegistrationCode = student.RegistrationCode,

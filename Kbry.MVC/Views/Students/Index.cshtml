@@ -33,7 +33,6 @@
           .PageSize(15)
           .Model(model => model.Id(s => s.Email))
           .Create(update => update.Action("EditingPopup_Create", "Students"))
-          .Read(read => read.Action("EditingPopup_Read", "Students"))
           .Update(update => update.Action("EditingPopup_Update", "Students"))
           .Destroy(update => update.Action("EditingPopup_Destroy", "Students"))
 
