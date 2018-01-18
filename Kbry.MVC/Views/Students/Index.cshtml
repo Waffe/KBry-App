@@ -7,19 +7,6 @@
 
 <h2><i class="fa fa-graduation-cap" aria-hidden="true"></i> Students</h2>
 
-@(Html.Kendo().AutoComplete().Name("search")
-      .Filter(FilterType.Contains)
-      .Placeholder("Search for student...")
-      .Template("<span student-id='${ data.Id }'>${ data.FullName }</span>")
-      .MinLength(3)
-      .DataSource(dataSource => dataSource
-          .Read(read => read.Action("GetStudents", "Students")
-          )
-          .ServerFiltering(true)
-      )
-      .DataTextField("FullName")
-      .Events(events => events.Select("window.SearchBox_Select")))
-
 @(Html.Kendo().Grid<StudentViewModel>()
       .Name("grid")
       .Columns(columns =>
@@ -51,11 +38,3 @@
           .Destroy(update => update.Action("EditingPopup_Destroy", "Students"))
 
       ))
-@*</table>*@
-<script>
-    window.Search = {
-        settings: {
-            actionUrl: "/Students/EditingPopup_Create"
-        }
-    };
-</script>

@@ -28,17 +28,19 @@
     <div class="demo-section k-content">
         @Html.LabelFor(model => model.SchoolClassName)
         @(Html.Kendo().DropDownList()
-              .Name("SchoolClasses")
+              .Name("schoolClasses")
               .DataTextField("Name")
               .DataValueField("Id")
-              .DataSource(source => {
-                                        source.Read(read =>
-                                        {
-                                            read.Action("GetClasses", "Students");
-                                        }); 
+              .DataSource(source =>
+              {
+                  source.Read(read =>
+                  {
+                      read.Action("GetClasses", "Students");
+                  });
               })
               .HtmlAttributes(new { style = "width: 100%" })
               )
+
     </div>
     <div>
         @Html.LabelFor(model => model.RegistrationCode)

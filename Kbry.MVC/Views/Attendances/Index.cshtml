@@ -1,84 +1,29 @@
-﻿@model IEnumerable<Kbry.Data.Model.Attendance>
+﻿@using Kbry.MVC.ViewModels
+@model IEnumerable<AttendanceViewModel>
 
 @{
 }
 <h2><i class="fa fa-clock-o" aria-hidden="true"></i> Attendances</h2>
 
-
-
-<div style="max-width: 300px">
-    <h4>Start date</h4>
-    @(Html.Kendo().DatePicker()
-                      .Name("start")
-                      .Value(DateTime.Today)
-                      .Max(DateTime.Today)
-                      .ParseFormats(new string[] { "MM/dd/yyyy" })
-                      .Events(e => e.Change("startChange"))
-                      .HtmlAttributes(new { style = "width:100%;" })
-    )
-    <hr />
-    <h4>Start date</h4>
-    @(Html.Kendo().DatePicker()
-                      .Name("end")
-                      .Value(DateTime.Today)
-                      .Min(DateTime.Today)
-                      .ParseFormats(new string[] { "MM/dd/yyyy" })
-                      .Events(e => e.Change("endChange"))
-                      .HtmlAttributes(new { style = "width:100%;" })
-    )
-</div>
-<table class="table table-striped table-condensed" id="sortable-table">
-    <tr>
-        <th onclick="sortTable(0)">
-            @Html.DisplayNameFor(model => model.Date)
-        </th>
-        <th onclick="sortTable(1)">
-            @Html.DisplayNameFor(model => model.Student)
-        </th>
-        <th onclick="sortTable(2)">
-            @Html.DisplayNameFor(model => model.Student.SchoolClass)
-        </th>
-        <th>
-
-        </th>
-    </tr>
-
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Date)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Student.FirstName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Student.SchoolClass.Name)
-            </td>
-        </tr>
-    }
-
-</table>
-<script>
-    function startChange() {
-        var endPicker = $("#end").data("kendoDateTimePicker"),
-            startDate = this.value();
-
-        if (startDate) {
-            startDate = new Date(startDate);
-            startDate.setDate(startDate.getDate() + 1);
-            endPicker.min(startDate);
-        }
-    }
-
-    function endChange() {
-        var startPicker = $("#start").data("kendoDateTimePicker"),
-            endDate = this.value();
-
-        if (endDate) {
-            endDate = new Date(endDate);
-            endDate.setDate(endDate.getDate() - 1);
-            startPicker.max(endDate);
-        }
-    }
-</script>
+@(Html.Kendo().Grid<AttendanceViewModel>()
+          .Name("grid")
+          .Columns(columns =>
+          {
+              columns.Bound(s => s.Date);
+              columns.Bound(s => s.StudentName);
+              columns.Bound(s => s.StudentClass).Width(150);
+          })
+          .HtmlAttributes(new { style = "height: 550px;" })
+          .Scrollable()
+          .Groupable()
+          .Sortable()
+          .Pageable(pageable => pageable
+              .Refresh(true)
+              .PageSizes(true)
+              .ButtonCount(5))
+          .DataSource(dataSource => dataSource
+              .Ajax()
+              .Sort(sort => sort.Add("Date").Descending())
+              .Read(read => read.Action("GetAttendances", "Attendances"))
+              .PageSize(15)
+          ))

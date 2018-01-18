@@ -12,6 +12,14 @@ namespace Kbry.MVC.ViewModels
         [HiddenInput(DisplayValue = false)]
         public int Id { get; set; }
 
-        public DateTime Date { get; set; }
+        public string Date { get; set; }
+
+        public string StudentFirstName { get; set; }
+
+        public string StudentLastName { get; set; }
+
+        public string StudentName => $"{StudentLastName}, {StudentFirstName}";
+
+        public string StudentClass { get; set; }
     }
 }

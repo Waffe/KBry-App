@@ -3,26 +3,19 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using Kbry.Data;
 using Kbry.Data.Model;
-using Kbry.Data.Repository;
 using Kbry.MVC.ViewModels;
 using Kendo.Mvc.Extensions;
 using Kendo.Mvc.UI;
-using Microsoft.Ajax.Utilities;
 
 namespace Kbry.MVC.Controllers
 {
     public class StudentsController : Controller
     {
         private readonly KbryDbContext _db = KbryDbContext.Create();
-
-        public StudentsController()
-        {
-        }
 
         public ActionResult Index(string searchString)
         {
@@ -134,19 +127,6 @@ namespace Kbry.MVC.Controllers
                 SchoolClassName = s.SchoolClass?.Name ?? string.Empty,
                 SchoolClassId = s.SchoolClass?.Id
             };
-        }
-
-        private IEnumerable<Student> FindStudents(string searchString)
-        {
-
-            var formattedSearchString = searchString.ToLower().Trim();
-            var foundStudents = _db.Students.Where(
-                s => ((s.FirstName.ToLower() + " " + s.LastName.ToLower()).Contains(formattedSearchString)
-                      || s.Email.ToLower().Contains(formattedSearchString)
-                      || s.SchoolClass.Name.ToLower().Contains(formattedSearchString)
-                      || s.RegistrationCode.ToLower().Contains(formattedSearchString)
-                      || s.RegistrationCode.ToLower().Contains(formattedSearchString)));
-            return foundStudents;
         }
 
         public ActionResult GetClasses()
