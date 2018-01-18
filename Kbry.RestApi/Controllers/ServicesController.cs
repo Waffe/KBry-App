@@ -28,7 +28,8 @@ namespace Kbry.RestApi.Controllers
         {
             AuthorizeApiKey();
             //return db.Attendances.Include(x => x.Student).Where(x => x.Student.RegistrationCode == regcode).Select(x => x.Date);
-            return db.Attendances.Include(x=>x.Student).Where(x => x.Student.RegistrationCode == regcode).Select(x => x.Date);
+            var apa = db.Attendances.Include(x => x.Student).Where(x => x.Student.RegistrationCode == regcode).Select(x => x.Date).ToList().AsQueryable();
+            return apa.OrderByDescending(x => x.Date).ThenByDescending(x => x.TimeOfDay);
         }
 
         [Route("GetAttendenceDatesByAmount/{regcode}/{amount:int}")]
@@ -39,7 +40,9 @@ namespace Kbry.RestApi.Controllers
 
             //return db.Students.FirstOrDefault(x => x.RegistrationCode == regcode).Attendances.Take(amount).Select(x => x.Date)
             //    .AsQueryable();
-            return db.Attendances.Include(x => x.Student).Where(x => x.Student.RegistrationCode == regcode).Take(amount).Select(x => x.Date);
+
+            var apa = db.Attendances.Include(x => x.Student).Where(x => x.Student.RegistrationCode == regcode).Select(x => x.Date).ToList().AsQueryable();
+            return apa.OrderByDescending(x => x.Date).ThenByDescending(x => x.TimeOfDay).Take(amount);
         }
 
 
@@ -61,22 +64,31 @@ namespace Kbry.RestApi.Controllers
 
 
         // POST: api/KbryApi
-        [ResponseType(typeof(Attendance))]
+        [ResponseType(typeof(Attendance))]       
+        [Route("PostAttendance")]
         [HttpPost]
         public IHttpActionResult PostAttendance(Attendance attendance)
         {
             AuthorizeApiKey();
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (!CheckCoordinates(attendance)) return BadRequest("Coordinates out of range");
-
+            //DebugStateif (!CheckCoordinates(attendance)) return BadRequest("Coordinates out of range");
+            var student = db.Students.Find(attendance.Student.Id);
+            if (student == null) return BadRequest(ModelState);
+            
+            attendance.Student = student;
             db.Attendances.Add(attendance);
             db.SaveChanges();
 
-            return CreatedAtRoute("DefaultApi", new { id = attendance.Id }, attendance);
+            var test = attendance;
+
+            return Ok(attendance);
+            //return CreatedAtRoute("DefaultApi", new { id = attendance.Id }, attendance);
+            
         }
 
 
